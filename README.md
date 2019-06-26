@@ -142,3 +142,23 @@ Our **/post page accepts the title via the query string parameter title. In clie
 </Link>
 ```
 **But in the server route, we don't have that title because we only have an ID for the blog post in the URL**. So, in that case, we set the ID as the server side query string param.
+
+## Fetching Data for pages
+```
+npm install --save isomorphic-unfetch
+```
+> we are going to fetch them from a remote server.
+
+```javascript
+Index.getInitialProps = async function() {
+  const res = await fetch('https://api.tvmaze.com/search/shows?q=batman');
+  const data = await res.json();
+
+  console.log(`Show data fetched. Count: ${data.length}`);
+
+  return {
+    shows: data.map(entry => entry.show)
+  };
+};
+```
+That's a static async function you can add into any page in your app. Using that, we can fetch data and send them as props to our page.
