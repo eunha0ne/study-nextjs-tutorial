@@ -91,3 +91,6 @@ In the <Link> element, we have used another prop called **“as”. That's the U
 
 * History Awareness:
 **Route masking works pretty nicely with the browser history.** All you have to do is just add the “as” prop for the link.
+
+* Reload(F5):
+When navigated to the post page. the Reload(F5) **gives us a 404 error. That's because there is no such page to load on the server.** The server will try to load the page p/hello-nextjs, but we only have three pages: index.js, about.js and post.js.
