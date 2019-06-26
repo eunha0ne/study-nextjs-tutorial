@@ -1,13 +1,18 @@
-import Link from 'next/link';
+// Method 1 - Layout as a Higher Order Component
+import withLayout from '../components/Layout';
 
-const Index = () => (
-  <div>
-    <Link href="/about">
-      {/* <a title="About Page">About</a> */}
-      <button title="About Page">About</button>
-    </Link>
-    <p>Next.js</p>
-  </div>
-);
+const Page = () => <p>Next.js index</p>;
+export default withLayout(Page);
 
-export default Index;
+// Method 2 - Page content as a prop
+/*
+import Layout from '../components/Layout';
+
+export default function Index() {
+  return (
+    <Layout>
+      <p>Next.js</p>
+    </Layout>
+  );
+}
+*/
