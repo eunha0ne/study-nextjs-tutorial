@@ -1,18 +1,23 @@
-// Method 1 - Layout as a Higher Order Component
-import withLayout from '../components/Layout';
-
-const Page = () => <p>Next.js index</p>;
-export default withLayout(Page);
-
-// Method 2 - Page content as a prop
-/*
 import Layout from '../components/Layout';
+import Link from 'next/link';
 
-export default function Index() {
+const PostLink = props => (
+  <li>
+    <Link href={`/post?title=${props.title}`}>
+      <a>{props.title}</a>
+    </Link>
+  </li>
+);
+
+export default function Blog() {
   return (
     <Layout>
-      <p>Next.js</p>
+      <h1>Next.js</h1>
+      <ul>
+        <PostLink title="Hello Next.js" />
+        <PostLink title="Learn Next.js is awesome" />
+        <PostLink title="Deploy apps with Zeit" />
+      </ul>
     </Layout>
   );
 }
-*/
