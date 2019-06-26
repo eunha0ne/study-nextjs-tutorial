@@ -8,15 +8,11 @@ npm install --save react react-dom next
 mkdir pages
 ```
 * Handling Errors:
-By default, Next.js will track errors like these and show it in the browser. This helps you identify errors and fix them quickly.
-
-**Once you fix the issue, the page will appear instantly without a full page reload.**
+By default, Next.js will track errors like these and show it in the browser. This helps you identify errors and fix them quickly. **Once you fix the issue, the page will appear instantly without a full page reload.**
 
 ## Navigate Between pages
 * Client-Side History Support:
-When you hit the Back button, it navigates the page to the index page entirely via the client; **next/link does all the location.history handling for you.**
-
-You don't need to write even a single line of client-side routing code.
+When you hit the Back button, it navigates the page to the index page entirely via the client; **next/link does all the location.history handling for you.** You don't need to write even a single line of client-side routing code.
 
 * Link is Just a Higher Order Component (HOC):
 Actually, **the title prop on next/link component has no effect. That's because next/link is just a [higher order component](https://reactjs.org/docs/higher-order-components.html)** which only accepts the "href" and some similar props. In this case, the child of the next/link component is the anchor tag.
@@ -78,4 +74,23 @@ export default Page;
   - We import and use the "withRouter" function from "next/router" which will inject the Next.js router as a property.
   - In this case, we are using the router's “query” object, which has the query string params.
   - Therefore, we get the title with props.router.query.title.
-  - `withRouter` can be used on any component in your Next.js application.
+  - **`withRouter` can be used on any component** in your Next.js application.
+
+## Clean URLs with Route Masking
+```javascript
+const PostLink = props => (
+  <li>
+    <Link as={`/p/${props.id}`} href={`/post?title=${props.title}`}>
+      <a>{props.title}</a>
+    </Link>
+  </li>
+);
+```
+* Route Masking:
+In the <Link> element, we have used another prop called **“as”. That's the URL which we need to show on the browser.** The URL your app sees is mentioned in the “href” prop.
+
+* History Awareness:
+**Route masking works pretty nicely with the browser history.** All you have to do is just add the “as” prop for the link.
+
+* Reload(F5):
+When navigated to the post page. the Reload(F5) **gives us a 404 error. That's because there is no such page to load on the server.** The server will try to load the page p/hello-nextjs, but we only have three pages: index.js, about.js and post.js.
