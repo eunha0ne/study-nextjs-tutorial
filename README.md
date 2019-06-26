@@ -94,3 +94,51 @@ In the <Link> element, we have used another prop called **“as”. That's the U
 
 * Reload(F5):
 When navigated to the post page. the Reload(F5) **gives us a 404 error. That's because there is no such page to load on the server.** The server will try to load the page p/hello-nextjs, but we only have three pages: index.js, about.js and post.js.
+
+## Sever Side Support for Clean URLs
+* create a Custom Sever:
+```
+npm install --save express
+```
+Then create a file called server.js in the root folder of your app and add following content:
+```javascript
+const express = require('express');
+const next = require('next');
+
+const dev = process.env.NODE_ENV !== 'production';
+const app = next({ dev });
+const handle = app.getRequestHandler();
+
+app
+  .prepare()
+  .then(() => {
+    const server = express();
+
+    server.get('*', (req, res) => {
+      return handle(req, res);
+    });
+
+    server.listen(3000, err => {
+      if (err) throw err;
+      console.log('> Ready on http://localhost:3000');
+    });
+  })
+  .catch(ex => {
+    console.error(ex.stack);
+    process.exit(1);
+  });
+```
+
+**On Windows, NODE_ENV=production will not work by default.** One solution is to install the npm module [cross-env](https://www.npmjs.com/package/cross-env) into your app. Then update the start script like this: "start": "cross-env NODE_ENV=production node server.js"
+```
+npm install --save-dev cross-env
+```
+
+* Information on URL:
+Our **/post page accepts the title via the query string parameter title. In client side routing**, we can easily give it a proper value with URL masking. (via the as prop in Link).
+```javascript
+<Link as={`/p/${props.id}`} href={`/post?title=${props.title}`}>
+  <a>{props.title}</a>
+</Link>
+```
+**But in the server route, we don't have that title because we only have an ID for the blog post in the URL**. So, in that case, we set the ID as the server side query string param.
