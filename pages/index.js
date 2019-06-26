@@ -10,11 +10,12 @@ const PostLink = props => (
     </Link>
   </li>
 );
+const headingStyleTemp = { color: '#aaa' };
 
 export default function Blog() {
   return (
     <Layout>
-      <h1>Next.js</h1>
+      <h1 style={headingStyleTemp}>Next.js</h1>
       <ul>
         <PostLink id="hello-nextjs" title="Hello Next.js" />
         <PostLink id="learn-nextjs" title="Learn Next.js is awesome" />
