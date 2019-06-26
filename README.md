@@ -133,3 +133,12 @@ app
 ```
 npm install --save-dev cross-env
 ```
+
+* Information on URL:
+Our **/post page accepts the title via the query string parameter title. In client side routing**, we can easily give it a proper value with URL masking. (via the as prop in Link).
+```javascript
+<Link as={`/p/${props.id}`} href={`/post?title=${props.title}`}>
+  <a>{props.title}</a>
+</Link>
+```
+**But in the server route, we don't have that title because we only have an ID for the blog post in the URL**. So, in that case, we set the ID as the server side query string param.
