@@ -23,3 +23,9 @@ Actually, **the title prop on next/link component has no effect. That's because 
 
 * Link Works With Anything:
 Just like a button, **you can place any of your custom React components or even a  div within a Link.**
+
+## Using Shared components
+* The Component Directory:
+We don't need to put our components in a special directory; **the directory can be named anything. The only special directory is the pages directory.** You can even create the Component inside the pages directory.
+
+* The Layout Component
