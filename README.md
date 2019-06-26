@@ -28,4 +28,9 @@ Just like a button, **you can place any of your custom React components or even 
 * The Component Directory:
 We don't need to put our components in a special directory; **the directory can be named anything. The only special directory is the pages directory.** You can even create the Component inside the pages directory.
 
-* The Layout Component
+* The Layout Component:
+In our app, we'll use a common style across various pages. For this purpose, **we can create a common Layout component and use it for each of our pages.**
+
+* Rendering Child Components:
+  - Method 1 - Layout as a Higher Order Component
+  - Method 2 - Page content as a prop
