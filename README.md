@@ -34,3 +34,48 @@ In our app, we'll use a common style across various pages. For this purpose, **w
 * Rendering Child Components:
   - Method 1 - Layout as a Higher Order Component
   - Method 2 - Page content as a prop
+
+## Create Dynamic pages
+* Adding a list of posts:
+```javascript
+import Layout from '../components/MyLayout.js';
+import Link from 'next/link';
+
+const PostLink = props => (
+  <li>
+    <Link href={`/post?title=${props.title}`}>
+      <a>{props.title}</a>
+    </Link>
+  </li>
+);
+export default function Blog() {
+  return (
+    <Layout>
+      <h1>My Blog</h1>
+      <ul>
+        <PostLink title="Hello Next.js" />
+        <PostLink title="Learn Next.js is awesome" />
+        <PostLink title="Deploy apps with Zeit" />
+      </ul>
+    </Layout>
+  );
+}
+```
+* Passing Data via Query Strings:
+```javascript
+import { withRouter } from 'next/router';
+import Layout from '../components/MyLayout.js';
+
+const Page = withRouter(props => (
+  <Layout>
+    <h1>{props.router.query.title}</h1>
+    <p>This is the blog post content.</p>
+  </Layout>
+));
+
+export default Page;
+```
+  - We import and use the "withRouter" function from "next/router" which will inject the Next.js router as a property.
+  - In this case, we are using the router's “query” object, which has the query string params.
+  - Therefore, we get the title with props.router.query.title.
+  - `withRouter` can be used on any component in your Next.js application.

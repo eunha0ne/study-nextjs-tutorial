@@ -7,6 +7,7 @@ const layoutStyle = {
 };
 
 // Method 1 - Layout as a Higher Order Component
+/*
 const withLayout = Page => {
   return () => (
     <div style={layoutStyle}>
@@ -17,9 +18,9 @@ const withLayout = Page => {
 };
 
 export default withLayout;
+*/
 
 // Method 2 - Page content as a prop
-/*
 const Layout = props => (
   <div style={layoutStyle}>
     <Header />
@@ -28,4 +29,3 @@ const Layout = props => (
 );
 
 export default Layout;
-*/
