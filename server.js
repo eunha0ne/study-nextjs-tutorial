@@ -9,7 +9,14 @@ app
   .prepare()
   .then(() => {
     const server = express();
-    
+
+    // Server Side Support for Clean URLs
+    server.get('/:id', (req, res) => {
+      const actualPage = '/post';
+      const queryParams = { title: req.params.id };
+      app.render(req, res, actualPage, queryParams);
+    });
+
     server.get('*', (req, res) => handle(req, res));
     server.listen(3000, err => {
       if (err) throw err;
