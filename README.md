@@ -31,6 +31,64 @@ In our app, we'll use a common style across various pages. For this purpose, **w
   - Method 1 - Layout as a Higher Order Component
   - Method 2 - Page content as a prop
 
+```javascript
+// components/MyLayout.js
+import Header from './Header';
+
+const layoutStyle = {
+  margin: 20,
+  padding: 20,
+  border: '1px solid #DDD'
+};
+
+const withLayout = Page => {
+  return () => (
+    <div style={layoutStyle}>
+      <Header />
+      <Page />
+    </div>
+  );
+};
+
+export default withLayout;
+
+// pages/index.js
+import withLayout from '../components/MyLayout';
+
+const Page = () => <p>Hello Next.js</p>;
+
+export default withLayout(Page);
+```
+
+```javascript
+// components/MyLayout.js
+import Header from './Header';
+
+const layoutStyle = {
+  margin: 20,
+  padding: 20,
+  border: '1px solid #DDD'
+};
+
+const Layout = props => (
+  <div style={layoutStyle}>
+    <Header />
+    {props.content}
+  </div>
+);
+
+export default Layout;
+
+// pages/index.js
+import Layout from '../components/MyLayout.js';
+
+const indexPageContent = <p>Hello Next.js</p>;
+
+export default function Index() {
+  return <Layout content={indexPageContent} />;
+}
+```
+
 ## Create Dynamic pages
 * Adding a list of posts:
 ```javascript
@@ -142,3 +200,42 @@ Our **/post page accepts the title via the query string parameter title. In clie
 </Link>
 ```
 **But in the server route, we don't have that title because we only have an ID for the blog post in the URL**. So, in that case, we set the ID as the server side query string param.
+
+## Fetching Data for pages
+
+> we are going to fetch them from a remote server.
+
+```
+npm install --save isomorphic-unfetch
+```
+```javascript
+Index.getInitialProps = async function() {
+  const res = await fetch('https://api.tvmaze.com/search/shows?q=batman');
+  const data = await res.json();
+
+  console.log(`Show data fetched. Count: ${data.length}`);
+
+  return {
+    shows: data.map(entry => entry.show)
+  };
+};
+```
+* Fetcing Shows:
+That's `a static async function` you can add into any page in your app. Using that, **we can fetch data and send them as props to our page.**
+
+* Implement the Post Page:
+```javascript
+Post.getInitialProps = async function(context) {
+  const { id } = context.query;
+  const res = await fetch(`https://api.tvmaze.com/shows/${id}`);
+  const show = await res.json();
+
+  console.log(`Fetched show: ${show.name}`);
+
+  return { show };
+};
+```
+the first argument of the function is the `context` object. **It has a query field that we can use to fetch information.**
+
+* Fetch Data in Client Side:
+Here we can only see the message on the browser console. **That's because we navigated to the post page via the client side. If you just visit a post page directly (eg:- http://localhost:3000/p/975) you'll be able to see the message printed on the server** but not in the client.
