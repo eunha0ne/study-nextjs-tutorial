@@ -245,7 +245,7 @@ Here we can only see the message on the browser console. **That's because we nav
 
 > That means, your CSS rules are scoped.
 
-```html
+```
 <style jsx>
   a {
     text-decoration: none;
@@ -261,3 +261,21 @@ Styled jsx works as a babel plugin. It will parse all of the CSS and apply it in
 
 * No Effect for Nested Component:
 **CSS rules have no effect on elements inside of a child component.** This feature of **styled-jsx helps you to manage styles for bigger apps.**
+
+* Global Style:
+```
+<style jsx global>{`
+  .markdown {
+    font-family: 'Arial';
+  }
+
+  .markdown a {
+    text-decoration: none;
+    color: blue;
+  }
+
+  .markdown a:hover {
+    opacity: 0.6;
+  }
+`}</style>
+```
