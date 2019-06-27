@@ -239,3 +239,43 @@ the first argument of the function is the `context` object. **It has a query fie
 
 * Fetch Data in Client Side:
 Here we can only see the message on the browser console. **That's because we navigated to the post page via the client side. If you just visit a post page directly (eg:- http://localhost:3000/p/975) you'll be able to see the message printed on the server** but not in the client.
+
+## Styling Components
+**Next.js comes preloaded with a CSS in JS framework called `styled-jsx`**, specifically designed to make your life easier. It allows you to write familiar CSS rules for your components; **rules will have no impact on anything other than the components**
+
+> That means, your CSS rules are scoped.
+
+```
+<style jsx>
+  a {
+    text-decoration: none;
+    color: blue;
+  }
+
+  a:hover {
+    opacity: 0.6;
+  }
+</style>
+```
+Styled jsx works as a babel plugin. It will parse all of the CSS and apply it in the build process.
+
+* No Effect for Nested Component:
+**CSS rules have no effect on elements inside of a child component.** This feature of **styled-jsx helps you to manage styles for bigger apps.**
+
+* Global Style:
+```
+<style jsx global>{`
+  .markdown {
+    font-family: 'Arial';
+  }
+
+  .markdown a {
+    text-decoration: none;
+    color: blue;
+  }
+
+  .markdown a:hover {
+    opacity: 0.6;
+  }
+`}</style>
+```
