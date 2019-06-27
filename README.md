@@ -1,5 +1,8 @@
 # Next.js Tutorial Summary
-* [Learn](https://nextjs.org/learn/basics/getting-started)
+
+> Next.js 튜토리얼을 따라가며 중요한 부분을 추출하고 정리한 내용을 담고 있습니다.
+
+* [Tutorial](https://nextjs.org/learn/basics/getting-started)
 * **Feature**
   * Sever Rendering:
   * Static Exporting:
@@ -7,8 +10,6 @@
   * Zero Setup:
   * Fully Extensible:
   * Rready for Production:
-
-> Next.js 튜토리얼을 따라가며 중요한 부분을 추출하고 정리한 내용을 담고 있습니다.
 
 ## Table of Contents
 * Getting Started
