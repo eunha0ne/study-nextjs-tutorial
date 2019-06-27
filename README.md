@@ -8,7 +8,7 @@
   * Fully Extensible:
   * Rready for Production:
 
-  > Next.js 튜토리얼을 따라가며 중요한 부분을 추출하고 정리한 내용을 담고 있습니다.
+> Next.js 튜토리얼을 따라가며 중요한 부분을 추출하고 정리한 내용을 담고 있습니다.
 
 ## Table of Contents
 * Getting Started
@@ -38,6 +38,7 @@
 * Styling Components (with `styled-jsx`)
   * No Effect for Nested Component
   * Global Style
+* (...계속)
 
 ## Getting Started
 ```
