@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 function getPosts() {
   return [
-    { id: 'hello-nextjs', title: 'Hext.js' },
+    { id: 'hello-nextjs', title: 'Next.js' },
     { id: 'learn-nextjs', title: 'Learn Next.js is awesom' },
     { id: 'deploy-nextjs', title: 'Depoly apps with ZEIT' }
   ];
