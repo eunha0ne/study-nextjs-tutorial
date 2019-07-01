@@ -319,3 +319,40 @@ Styled jsx works as a babel plugin. It will parse all of the CSS and apply it in
   }
 `}</style>
 ```
+
+## Deploying a Next.js app
+* Run two instances:
+```javascript
+"scripts": {
+  "start": "next start -p %PORT%"
+}
+```
+
+```
+npm i -g cross-env
+npm run build
+cross-env PORT=8000 npm start
+cross-env PORT=9000 npm start
+```
+
+## Deploying to ZEIT Now
+```
+"scripts": {
+  "build": "next build",
+  "now-build": "next build"
+}
+```
+
+Next, create a next.config.js file in the root of the project and specify target as 'serverless':
+```javascript
+module.exports = {
+  target: 'serverless'
+};
+```
+Then, create a now.json file in the root of your project with the following contents:
+```javascript
+{
+  "version": 2,
+  "builds": [{ "src": "package.json", "use": "@now/next" }]
+}
+```
