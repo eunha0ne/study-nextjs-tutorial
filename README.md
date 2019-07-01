@@ -356,3 +356,12 @@ Then, create a now.json file in the root of your project with the following cont
   "builds": [{ "src": "package.json", "use": "@now/next" }]
 }
 ```
+
+```
+yarn init -y
+```
+NOTE: Using the -y flag will initialize the created package.json file with these default settings.
+
+```
+npm install -g now
+```
