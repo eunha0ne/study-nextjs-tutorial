@@ -1,12 +1,13 @@
 {
   "name": "study-nextjs-tutorial",
   "version": "1.0.0",
-  "description": "* [Learn](https://nextjs.org/learn/basics/getting-started)",
+  "description": "tutorial working through",
   "main": "index.js",
   "scripts": {
     "dev": "node server.js",
     "build": "next build",
-    "start": "cross-env NODE_ENV=production node server.js",
+    "now-build": "next build",
+    "start": "next start -p %PORT%",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
