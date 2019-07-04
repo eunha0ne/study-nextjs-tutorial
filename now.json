@@ -1,6 +1,4 @@
 {
   "version": 2,
-  "alias": "my-aliased-nextjs-project",
-  "name": "my-nextjs-project",
   "builds": [{ "src": "package.json", "use": "@now/next" }]
 }
