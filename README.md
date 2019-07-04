@@ -336,32 +336,49 @@ cross-env PORT=9000 npm start
 ```
 
 ## Deploying to ZEIT Now
-```
-"scripts": {
-  "build": "next build",
-  "now-build": "next build"
-}
-```
+* Deploying a Next.js App:
 
-Next, create a next.config.js file in the root of the project and specify target as 'serverless':
-```javascript
-module.exports = {
-  target: 'serverless'
-};
-```
-Then, create a now.json file in the root of your project with the following contents:
-```javascript
-{
-  "version": 2,
-  "builds": [{ "src": "package.json", "use": "@now/next" }]
-}
-```
+  1. Using `ZEIT Now`, add the following scripts to the package.json file:
+  ```
+  "scripts": {
+    "build": "next build",
+    "now-build": "next build"
+  }
+  ```
 
-```
-yarn init -y
-```
-NOTE: Using the -y flag will initialize the created package.json file with these default settings.
+  2. Next, create a next.config.js file in the root of the project and specify target as 'serverless':
+  ```javascript
+  module.exports = {
+    target: 'serverless'
+  };
+  ```
 
+  3. Then, create a now.json file in the root of your project with the following contents:
+  ```javascript
+  {
+    "version": 2,
+    "builds": [{ "src": "package.json", "use": "@now/next" }]
+  }
+  ```
+  The now.json file achieves a few things:
+  version - specifies which Now platform version to use for the deployment
+  alias - used to alias deployments when using a Git integration
+  name - provides a prefix for your deployments
+
+  4. Using the -y flag will initialize the created package.json file with these default settings.
+  ```
+  yarn init -y
+
+  npm install -g now
+  ```
+
+[Create a Next.js Application and Deploy with Now](https://zeit.co/guides/deploying-nextjs-with-now/)
+[Getting Started with Next.js and Now](https://zeit.co/guides/deploying-nextjs-with-now#creating-the-project)
+
+Even if you start your app on port 8000, **once deployed to now, you can access it with port 443** (the default port for "https" websites).
+
+* Build Your App Locally:
+Now will build your app inside it's build infrastructure. But, **not every hosting provider will have something like that. In that case, you can build your app locally** with:
 ```
-npm install -g now
+npm run build
 ```
