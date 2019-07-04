@@ -10,12 +10,9 @@
     "start": "next start -p %PORT%",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/eunha0ne/study-nextjs-tutorial.git"
-  },
+  "repository": "git+https://github.com/eunha0ne/study-nextjs-tutorial.git",
   "keywords": [],
-  "author": "",
+  "author": "eunha0ne <eunha0ne@gmail.com>",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/eunha0ne/study-nextjs-tutorial/issues"
