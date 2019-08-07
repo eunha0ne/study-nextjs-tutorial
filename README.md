@@ -420,3 +420,34 @@ cd out
 serve -p 8080
 ```
 
+You can access all the pages via client side since the app loads the relevant JavaScript content. But when you try to load it directly, it has no HTML content to serve.
+
+That's because we asked Next.js to export only the index (/) page.
+
+
+### Exporting Other pages
+```javascript
+const fetch = require('isomorphic-unfetch');
+
+module.exports = {
+  exportPathMap: async function() {
+    const paths = {
+      '/': { page: '/' },
+      '/about': { page: '/about' }
+    };
+    const res = await fetch('https://api.tvmaze.com/search/shows?q=batman');
+    const data = await res.json();
+    const shows = data.map(entry => entry.show);
+
+    // The page /show/[id] will then use the query object to get the id and fetch more info about the show.
+    shows.forEach(show => {
+      paths[`/show/${show.id}`] = { page: '/show/[id]', query: { id: show.id } };
+    });
+
+    return paths;
+  }
+};
+```
+Next.js won't build the app when running the next export command. **In this case, the page /show/[id] already exists in the build, and there's no need to build the whole app again.**
+
+But if we've made any changes to the app, we need to build the app again to get those changes.
