@@ -4,12 +4,12 @@
 
 * [Tutorial](https://nextjs.org/learn/basics/getting-started)
 * **Feature**
-  * Sever Rendering:
-  * Static Exporting:
-  * CSS-in-JS:
-  * Zero Setup:
-  * Fully Extensible:
-  * Rready for Production:
+  * Sever Rendering
+  * Static Exporting
+  * CSS-in-JS
+  * Zero Setup
+  * Fully Extensible
+  * Rready for Production
 
 ## Table of Contents
 * Getting Started
@@ -39,7 +39,7 @@
 * Styling Components (with `styled-jsx`)
   * No Effect for Nested Component
   * Global Style
-* (...계속)
+
 
 ## Getting Started
 ```
@@ -382,3 +382,72 @@ Now will build your app inside it's build infrastructure. But, **not every hosti
 ```
 npm run build
 ```
+
+
+## Export into a Static HTML App
+
+The best way to deploy your web app is as a static HTML app, if that's possible. With a static app, **you can use a fast and efficient web server like `NGINX` or a cost-effective static hosting service like `ZEIT now` or `GitHub pages`.**
+
+**But not every app can be deployed as a static app.** If your app needs to generate dynamic pages at the runtime, you can't deploy it as a static app.
+
+### Export the index Page
+* next.config.js
+```javascript
+module.exports = {
+  exportsPathMap: function () {
+    return {
+      '/': { page: '/' }
+    };
+  }
+};
+```
+* package.json
+```javascript
+"scripts": {
+  "build": "next build",
+  "export": "next export"
+}
+```
+* commands
+```bash
+npm run build
+npm run export
+
+# You can see the exported HTML content on a directory called out inside your project.
+
+npm install -g serve
+cd out
+serve -p 8080
+```
+
+You can access all the pages via client side since the app loads the relevant JavaScript content. But when you try to load it directly, it has no HTML content to serve.
+
+That's because we asked Next.js to export only the index (/) page.
+
+
+### Exporting Other pages
+```javascript
+const fetch = require('isomorphic-unfetch');
+
+module.exports = {
+  exportPathMap: async function() {
+    const paths = {
+      '/': { page: '/' },
+      '/about': { page: '/about' }
+    };
+    const res = await fetch('https://api.tvmaze.com/search/shows?q=batman');
+    const data = await res.json();
+    const shows = data.map(entry => entry.show);
+
+    // The page /show/[id] will then use the query object to get the id and fetch more info about the show.
+    shows.forEach(show => {
+      paths[`/show/${show.id}`] = { page: '/show/[id]', query: { id: show.id } };
+    });
+
+    return paths;
+  }
+};
+```
+Next.js won't build the app when running the next export command. **In this case, the page /show/[id] already exists in the build, and there's no need to build the whole app again.**
+
+But if we've made any changes to the app, we need to build the app again to get those changes.
