@@ -451,3 +451,12 @@ module.exports = {
 Next.js won't build the app when running the next export command. **In this case, the page /show/[id] already exists in the build, and there's no need to build the whole app again.**
 
 But if we've made any changes to the app, we need to build the app again to get those changes.
+
+### Deploying the App
+
+```bash
+cd out
+now
+```
+
+if you need to create pages dynamically after you've deploy the app, this is not the solution. For that, you need to build the app and start it with next start
