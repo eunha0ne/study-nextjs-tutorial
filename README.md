@@ -460,3 +460,73 @@ now
 ```
 
 if you need to create pages dynamically after you've deploy the app, this is not the solution. For that, you need to build the app and start it with next start
+
+
+## TypeScript
+
+Next.js has support for TypeScript out of the box, making it possible to have type checking and other amazing features like:
+* Types for Next.js internals like next/head, next/router and pages
+* Almost no setup, Next.js will do all the heavy lifting for you
+* You can leverage all the power of TypeScript in your app without limitations, this includes a better developer experience, the amazing VS Code ecosystem and more
+
+```
+npm init -y
+npm install --save react react-dom next
+mkdir pages
+npm install --save-dev typescript @types/react @types/react-dom @types/node
+```
+
+create pages/index.tsx with the following content:
+```javascript
+import { NextPage } from 'next';
+
+const Home: NextPage<{ userAgent: string }> = ({ userAgent }) => (
+  <h1>Hello world! - user agent: {userAgent}</h1>
+);
+
+Home.getInitialProps = async ({ req }) => {
+  const userAgent = req ? req.headers['user-agent'] || '' : navigator.userAgent;
+  return { userAgent };
+};
+
+export default Home;
+```
+
+next-env.d.ts
+```javascript
+/// <reference types="next" />
+/// <reference types="next/types/global" />
+```
+
+tsconfing.json
+ ```javascript
+ {
+  "compilerOptions": {
+    "target": "es5",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve"
+  },
+  "exclude": [
+    "node_modules"
+  ],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx"
+  ]
+}
+ ```
