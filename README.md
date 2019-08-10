@@ -544,7 +544,7 @@ Firebase is a pretty big module (more than the size of react, react-dom and next
 
 **When it comes to client side, we only need firebase modules when the user starts navigating into a different page. So, if we can load the modules at that time, we can improve the initial loading of our app.**
 
-###  Analyze
+### Analyze
 ```bash
 npm run analyze:browser
 ```
@@ -582,7 +582,7 @@ npm run build
 npm run dev
 ```
 
-###Test Result
+### Test Result
 As you have witnessed, it only loads when you navigate a page for the first time. Here is what is actually happening.
 
 At the first time, getInitialProps of the pages/post.js page imports the firebase/app and firebase/databasemodules (vialib/load-db.js). So, the app loads the bundle.
