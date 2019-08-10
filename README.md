@@ -530,3 +530,65 @@ tsconfing.json
   ]
 }
  ```
+
+ ## Lazy Loading Modules
+
+ **Next.js does automatic code splitting and it is based on the pages in your app. For example, if one of your modules is used at-least in half of your pages, then it moves into the main JavaScript bundle.** If not, that module stays inside the page's bundle.
+
+This is a pretty decent default setup. But sometimes, we need much better control for loading modules. For example, have a look at the following scenario, where:
+* We are building a hacker news clone based on the official firebase API,
+* We fetch the data on the server to do SSR,
+* We also fetch data in the client side when needed (when switching pages).
+
+Firebase is a pretty big module (more than the size of react, react-dom and next.js all combined), so we're importing only firebase/app and firebase/database that our app needs.
+
+**When it comes to client side, we only need firebase modules when the user starts navigating into a different page. So, if we can load the modules at that time, we can improve the initial loading of our app.**
+
+###  Analyze
+```bash
+npm run analyze:browser
+```
+
+### Lazy Loading
+We use the firebase modules only when the user is trying to navigate into a different page. So, if we can load the modules at that time, that is a huge win for our app.
+
+Luckily, we can easily do that with Next.js's dynamic import functionality.
+
+```javascript
+export default async function loadDb() {
+  // const firebase = require('firebase/app');
+  // require('firebase/database');
+  const firebase = await import('firebase/app');
+  await import('firebase/database');
+
+  try {
+    firebase.initializeApp({
+      databaseURL: 'https://hacker-news.firebaseio.com'
+    });
+  } catch (err) {
+    // we skip the "already exists" message which is
+    // not an actual error when we're hot-reloading
+    if (!/already exists/.test(err.message)) {
+      console.error('Firebase initialization error', err.stack);
+    }
+  }
+
+  return firebase.database().ref('v0');
+}
+```
+
+```bash
+npm run build
+npm run dev
+```
+
+###Test Result
+As you have witnessed, it only loads when you navigate a page for the first time. Here is what is actually happening.
+
+At the first time, getInitialProps of the pages/post.js page imports the firebase/app and firebase/databasemodules (vialib/load-db.js). So, the app loads the bundle.
+
+Even the second time, pages/index.js page imports the firebase/app and firebase/database modules. But at that time, they are already loaded and there is no reason to load them again.
+* You need the firebase/app and firebase/database modules in all of the pages.
+* **Lazy loaded modules reduce the size of the main JavaScript bundle app.js, but they don't affect the initial page loading time** since the page is server rendered.
+* Loading of the main JavaScript bundle doesn't block the initial HTML rendering
+The only benefit this gives us, is the quick JavaScript interactivity because the app.js loads faster due to the reduced size.
