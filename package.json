@@ -4,12 +4,15 @@
   "description": "tutorial working through",
   "main": "index.js",
   "scripts": {
-    "dev": "node server.js",
+    "dev": "next",
     "build": "next build",
     "export": "next export",
     "now-build": "next build",
     "start": "next start -p %PORT%",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "analyze": "cross-env BUNDLE_ANALYZE=both next build",
+    "analyze:server": "cross-env BUNDLE_ANALYZE=server next build",
+    "analyze:browser": "cross-env BUNDLE_ANALYZE=browser next build"
   },
   "repository": "git+https://github.com/eunha0ne/study-nextjs-tutorial.git",
   "keywords": [],
@@ -20,11 +23,14 @@
   },
   "homepage": "https://github.com/eunha0ne/study-nextjs-tutorial#readme",
   "dependencies": {
+    "@zeit/next-bundle-analyzer": "^0.1.2",
+    "marked": "^0.7.0",
     "express": "^4.17.1",
     "isomorphic-unfetch": "^3.0.0",
     "next": "^8.1.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
+    "react-highlight": "^0.12.0",
     "react-markdown": "^4.1.0"
   },
   "devDependencies": {
