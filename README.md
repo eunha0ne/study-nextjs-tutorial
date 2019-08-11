@@ -592,3 +592,74 @@ Even the second time, pages/index.js page imports the firebase/app and firebase/
 * **Lazy loaded modules reduce the size of the main JavaScript bundle app.js, but they don't affect the initial page loading time** since the page is server rendered.
 * Loading of the main JavaScript bundle doesn't block the initial HTML rendering
 The only benefit this gives us, is the quick JavaScript interactivity because the app.js loads faster due to the reduced size.
+
+## Lazy Loading Components
+
+We use a lot of React components in our applications. We include them in our main JavaScript bundle (app.js) or in one of the page's JavaScript bundles. Sometimes some of these components are pretty big.
+
+For example, this is a pretty simple blog site we built with Next.js based on markdown. It also supports syntax highlighting. For that, we use react-highlight, and it's a pretty big module.
+
+Since it's used in almost all of the pages, react-highlight is included in our main JavaScript bundle.
+
+**But we don't need to use the syntax highlighter on every page. It's only needed when there's a code sample in the blog post.**
+
+```bash
+npm install --save @zeit/next-bundle-analyzer
+npm install --save-dev cross-env
+npm install -g marked
+npm install react-highlight --save
+```
+
+In this app, we've isolated markdown rendering into a React Higher Order Component (HOC). It's located at lib/with-post.js. Here's the content of that file:
+```javascript
+import React from 'react';
+import MyLayout from '../components/MyLayout';
+import marked from 'marked';
+
+// Now we are trying to convert the above Highlight component into a dynamic component. Dynamic components are powered by the dynamic imports in Next.js
+
+// import Highlight from 'react-highlight';
+import dynamic from 'next/dynamic';
+
+const Highlight = dynamic(import('react-highlight'));
+
+marked.setOptions({
+  gfm: true,
+  tables: true,
+  breaks: true
+});
+
+export default function WithPost(options) {
+  return class PostPage extends React.Component {
+    renderMarkdown() {
+      // If a code snippet contains in the markdown content
+      // then use Highlight component
+      if (/~~~/.test(options.content)) {
+        return (
+          <div>
+            <Highlight innerHTML>{marked(options.content)}</Highlight>
+          </div>
+        );
+      }
+
+      // If not, simply render the generated HTML from markdown
+      return <div dangerouslySetInnerHTML={{ __html: marked(options.content) }} />;
+    }
+
+    render() {
+      return (
+        <MyLayout>
+          <h1>{options.title}</h1>
+          {this.renderMarkdown()}
+        </MyLayout>
+      );
+    }
+  };
+}
+```
+
+Lazy loading dynamic components are pretty important for a high performing app. It allows you to load components whenever you need to. If you do this wisely, **you can reduce the amount of JavaScript that needs to be downloaded and make your app load faster.**
+
+Next.js supports server-side rendering (SSR) for these dynamic components by default. So, you don't lose anything by using dynamic components.
+
+We've only used the basic functionality of dynamic components. You can learn more about them by referring to [documentation](https://nextjs.org/docs/#dynamic-import).
