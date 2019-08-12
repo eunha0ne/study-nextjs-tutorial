@@ -663,3 +663,31 @@ Lazy loading dynamic components are pretty important for a high performing app. 
 Next.js supports server-side rendering (SSR) for these dynamic components by default. So, you don't lose anything by using dynamic components.
 
 We've only used the basic functionality of dynamic components. You can learn more about them by referring to [documentation](https://nextjs.org/docs/#dynamic-import).
+
+## Create AMP Pages
+
+You can create an AMP only page by exporting amp: true in the config object, here's how:
+```javascript
+// pages/index.js
+export const config = { amp: true };
+
+export default function Index(props) {
+  return <p>Welcome to the AMP only Index page!!</p>;
+}
+```
+
+You can also create a hybrid AMP page by addding amp: 'hybrid':
+```javascript
+// pages/index.js
+import { useAmp } from 'next/amp';
+
+export const config = { amp: 'hybrid' };
+
+export default function Index(props) {
+  const isAmp = useAmp();
+  return <p>Welcome to the {isAmp ? 'AMP' : 'normal'} version of the Index page!!</p>;
+}
+```
+Then to view the AMP version of the page add ?amp=1 to the URL. useAmp() is a hook to know if any component, not only the page, is being used for AMP.
+
+
