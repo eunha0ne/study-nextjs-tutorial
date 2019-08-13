@@ -690,4 +690,12 @@ export default function Index(props) {
 ```
 Then to view the AMP version of the page add ?amp=1 to the URL. useAmp() is a hook to know if any component, not only the page, is being used for AMP.
 
+## Automatic Prerendering
 
+Before **Next.js 9**, when you ran `next build`, server/serverless bundles would be created along with the client bundles. Then if you wanted to create static HTML versions of your pages you would need to run `next export`.
+
+This could be sub-optimal if you need both dynamic and static pages. Since **Next.js 9, next build comes with Automatic Prerendering which can decide the build output per page, allowing your app to leverage static files and lambdas in the same app.**
+
+```bash
+npm run build
+```
