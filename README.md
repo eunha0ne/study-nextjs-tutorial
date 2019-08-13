@@ -11,35 +11,6 @@
   * Fully Extensible
   * Rready for Production
 
-## Table of Contents
-* Getting Started
-  * Handling errors
-* Navigate Between pages
-  * Client-side History Support
-  * `Link` is Just a Higher Order Component (HOC)
-  * `Link` Works with Anything
-* Using Shared components
-  * The Component directory
-  * The `Layout` Component
-  * Rendering Child Components
-* Create Dynamic pages
-  * Adding a list of posts
-  * padding Data via Query Strings
-* Clean URLs with Route Masking
-  * Route Masking
-  * History Awareness
-  * Reload
-* Sever Side Support for Clean URLs
-  * create a Custom Server
-  * Information on URL
-* Fetching Data for pages
-  * Fetching shows
-  * Implement the Post Page
-  * Fetch Data in Clinet Side
-* Styling Components (with `styled-jsx`)
-  * No Effect for Nested Component
-  * Global Style
-
 
 ## Getting Started
 ```
