@@ -696,6 +696,64 @@ Before **Next.js 9**, when you ran `next build`, server/serverless bundles would
 
 This could be sub-optimal if you need both dynamic and static pages. Since **Next.js 9, next build comes with Automatic Prerendering which can decide the build output per page, allowing your app to leverage static files and lambdas in the same app.**
 
+* [Next.js 9](https://nextjs.org/blog/next-9)
+
 ```bash
+npm i next@latest react@latest react-dom@latest
 npm run build
 ```
+
+### Static Build
+```javascript
+// index.js
+const Index = () => <h1>Hello World</h1>;
+export default Index;
+```
+**handled by ⚡/, it was compiled to a static HTML file** because it doesn't require Server Side Rendering (SSR). **_app, _document and _error are internal pages of Next.js.**
+
+### Sever Side Rendering
+
+Let's add a new page called pages/agent.js that uses SSR to retrieve the user agent:
+```javascript
+const Agent = ({ userAgent }) => <h1>Your user agent is: {userAgent}</h1>;
+
+Agent.getInitialProps = async ({ req }) => {
+  const userAgent = req ? req.headers['user-agent'] : navigator.userAgent;
+  return { userAgent };
+};
+
+export default Agent;
+```
+Our new page is very similar to pages/index.js **but now we're also adding getInitialProps, which will add dynamic data to the page before render.** Now let's build our app again:
+
+### Serverless
+
+We can have static and SSR pages in the same app by only using next build. **Static HTML should always be fast since it can be cached very well, although there are still cases where you need to handle dynamic data. For these cases you can create lambda functions for each page.** We don't need a server if we can create a lambda per page, pages are independent after all, let's add the file next.config.js in the root folder with the following content:
+```javascript
+module.exports = {
+  target: 'serverless'
+};
+```
+Now when building the app again serverless bundles will be created for non-static pages: It was compiled to λ (Lambda) 
+
+* lambda expressions
+  * lambda expressions are **abstractions which enable a function to be passed around like data. In JavaScript, everything can be treated as an object, this means that a function can be sent into another function as a parameter and can also be retrieved from the called function as a return value.** An example of lambda expression is as shown below.
+  ```javascript
+  function traverseArray(arr, func) {
+      let result = '';
+      for (const value of arr) {
+          result += func(value) + ' ';
+      }
+  }
+
+  const arr = [1, 2, 3, 4, 5];
+  const doubler = value => value * 2;
+
+  traverseArray(arr, doubler); // 2 4 6 8 10 
+  ```
+  
+  
+* Now you know how `next build` works and how it can **automatically choose what the ideal build output for each page is.** Here are some good tips to help make sure the ideal output is chosen:
+  * In most cases you don't need a custom server, so **try to add `target: 'serverless'` whenever possible**
+  * `getInitialProps` is the main deciding factor for **whether a page is static or not, don't add it if you don't need SSR**
+  * Not all dynamic data has to have SSR, e.g if it's behind a login, or **if you don't need SEO on it, for cases like that it can be better to do the fetching outside getInitialProps** and get the benefits of static HTML
